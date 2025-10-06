@@ -10,23 +10,22 @@
     --bg-2:#001b2b;
     --accent:#00BD8A;
     --accent-2:#00A4FF;
+    --accent-3:#FF6EC7;
     --muted:#8B949E;
     --panel:#011B3B80;
     --glass: rgba(255,255,255,0.03);
 }
 
-/* Reset & basic */
+/* Reset */
 * { box-sizing:border-box; }
 html, body, #app { height:100%; margin:0; }
 body {
     font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
     background: linear-gradient(135deg, var(--bg-1) 0%, var(--bg-2) 100%);
     color:#e6f1ff;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
 }
 
-/* Root app container */
+/* Root container */
 .app-root {
     min-height:100vh;
     display:flex;
@@ -37,24 +36,29 @@ body {
     position:relative;
 }
 
-/* Canvas background drift */
+/* 1-5: Background animations */
 .canvas-bg {
     position:absolute;
     inset:0;
-    opacity:0.18;
+    opacity:0.2;
     pointer-events:none;
     background:
         radial-gradient(circle at 20% 50%, rgba(157,78,221,0.25) 0%, transparent 40%),
         radial-gradient(circle at 80% 50%, rgba(0,164,255,0.18) 0%, transparent 40%);
-    filter:blur(20px);
-    animation: drift 80s infinite alternate linear;
+    filter:blur(25px);
+    animation: drift 120s infinite alternate linear, hueShift 30s infinite linear;
 }
 @keyframes drift {
     0% { background-position: 20% 50%, 80% 50%; }
     100% { background-position: 25% 55%, 75% 45%; }
 }
+@keyframes hueShift {
+    0% { filter: hue-rotate(0deg) blur(25px); }
+    50% { filter: hue-rotate(180deg) blur(35px); }
+    100% { filter: hue-rotate(360deg) blur(25px); }
+}
 
-/* Header animations */
+/* Header */
 .app-header {
     width:100%;
     max-width:980px;
@@ -63,53 +67,52 @@ body {
     justify-content:space-between;
     margin-bottom:18px;
     z-index:2;
-    animation: fadeDown 1s ease forwards;
+    animation: fadeDown 1s ease forwards, bounce 2s infinite alternate;
 }
-@keyframes fadeDown {
-    0% { opacity:0; transform: translateY(-40px); }
-    100% { opacity:1; transform: translateY(0); }
-}
+@keyframes fadeDown { 0% { opacity:0; transform: translateY(-50px);} 100%{opacity:1;transform:translateY(0);} }
+@keyframes bounce { 0%{transform:translateY(0);} 50%{transform:translateY(-5px);} 100%{transform:translateY(0);} }
 
 .logo-wrap { display:flex; align-items:center; gap:12px; }
 
+/* 6-10: Logo animations */
 .logo {
     font-weight:700;
-    font-size:20px;
+    font-size:22px;
     color: var(--accent);
-    text-shadow:0 0 18px rgba(0,189,138,0.35);
-    animation: glowText 3s infinite alternate;
+    text-shadow:0 0 10px var(--accent);
+    animation: glowText 3s infinite alternate, scaleText 2s infinite alternate;
 }
 @keyframes glowText {
-    0% { text-shadow: 0 0 10px rgba(0,189,138,0.3); }
-    50% { text-shadow: 0 0 20px rgba(0,189,138,0.6); }
-    100% { text-shadow: 0 0 15px rgba(0,189,138,0.4); }
+    0% { text-shadow: 0 0 10px var(--accent); }
+    50% { text-shadow: 0 0 20px var(--accent-2); }
+    100% { text-shadow: 0 0 25px var(--accent-3); }
+}
+@keyframes scaleText {
+    0%{transform:scale(1);} 50%{transform:scale(1.1);} 100%{transform:scale(1);}
 }
 
 .logo-glow {
     width:48px;
     height:48px;
     border-radius:999px;
-    background: radial-gradient(circle, rgba(0,189,138,0.25) 0%, transparent 50%);
-    box-shadow:0 0 20px rgba(0,189,138,0.25);
-    animation: pulse 2.5s infinite ease-in-out;
+    background: radial-gradient(circle, var(--accent) 0%, transparent 50%);
+    box-shadow:0 0 20px var(--accent);
+    animation: pulse 2s infinite alternate ease-in-out, rotateLogo 4s linear infinite;
 }
-@keyframes pulse {
-    0%,100% { transform: scale(1); opacity:0.8; }
-    50% { transform: scale(1.2); opacity:1; }
-}
+@keyframes pulse { 0%,100%{transform:scale(1);opacity:0.8;}50%{transform:scale(1.2);opacity:1;} }
+@keyframes rotateLogo {0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
 
+/* 11-15: Status text animations */
 .status {
     color: var(--muted);
     font-size:14px;
     opacity:0;
-    animation: fadeInStatus 2s ease forwards 0.5s;
+    animation: fadeInStatus 2s ease forwards, wiggle 1.5s infinite alternate;
 }
-@keyframes fadeInStatus {
-    0% { opacity:0; transform: translateY(-10px); }
-    100% { opacity:1; transform: translateY(0); }
-}
+@keyframes fadeInStatus { 0%{opacity:0;transform:translateY(-10px);}100%{opacity:1;transform:translateY(0);} }
+@keyframes wiggle {0%{transform:rotate(-2deg);}50%{transform:rotate(2deg);}100%{transform:rotate(-2deg);}}
 
-/* Chat panel animations */
+/* Chat panel */
 .chat-panel {
     width:100%;
     max-width:980px;
@@ -119,12 +122,10 @@ body {
     overflow:hidden;
     box-shadow:0 8px 40px rgba(0,0,0,0.6);
     z-index:2;
-    animation: slideUp 1s ease forwards 0.5s;
+    animation: slideUp 1s ease forwards, glowPanel 3s infinite alternate;
 }
-@keyframes slideUp {
-    0% { opacity:0; transform: translateY(40px); }
-    100% { opacity:1; transform: translateY(0); }
-}
+@keyframes slideUp {0%{opacity:0;transform:translateY(50px);}100%{opacity:1;transform:translateY(0);} }
+@keyframes glowPanel {0%{box-shadow:0 8px 30px rgba(0,189,138,0.2);}50%{box-shadow:0 8px 40px rgba(0,164,255,0.5);}100%{box-shadow:0 8px 35px rgba(0,189,138,0.4);} }
 
 /* Messages */
 .messages {
@@ -136,129 +137,56 @@ body {
     gap:18px;
 }
 
-.message {
-    max-width:78%;
-    display:flex;
-    gap:12px;
-    align-items:flex-start;
-    opacity:0;
-    animation: messageFade 0.5s ease forwards;
-}
+/* 16-25: Message animations */
+.message { max-width:78%; display:flex; gap:12px; align-items:flex-start; opacity:0; animation: messageFade 0.5s ease forwards; }
 .message.bot { justify-content:flex-start; }
 .message.user { justify-content:flex-end; align-self:flex-end; }
 
-@keyframes messageFade {
-    0% { opacity:0; transform: translateY(20px); }
-    100% { opacity:1; transform: translateY(0); }
-}
+@keyframes messageFade {0%{opacity:0;transform:translateY(20px) rotateX(-20deg);}100%{opacity:1;transform:translateY(0) rotateX(0deg);} }
 
 .bubble {
     padding:14px 16px;
     border-radius:12px;
     line-height:1.35;
     box-shadow:0 6px 20px rgba(2,6,23,0.6);
-    animation: bubbleGlow 2.5s infinite alternate;
+    animation: bubbleGlow 2.5s infinite alternate, floatBubble 4s infinite ease-in-out, rotateBubble 6s infinite linear;
 }
-@keyframes bubbleGlow {
-    0% { box-shadow:0 6px 20px rgba(2,6,23,0.4); }
-    50% { box-shadow:0 6px 30px rgba(0,164,255,0.6); }
-    100% { box-shadow:0 6px 25px rgba(0,189,138,0.5); }
-}
+@keyframes bubbleGlow {0%{box-shadow:0 6px 20px rgba(2,6,23,0.4);}50%{box-shadow:0 6px 30px rgba(0,164,255,0.6);}100%{box-shadow:0 6px 25px rgba(0,189,138,0.5);} }
+@keyframes floatBubble {0%{transform:translateY(0);}50%{transform:translateY(-4px);}100%{transform:translateY(0);} }
+@keyframes rotateBubble {0%{transform:rotate(-1deg);}50%{transform:rotate(1deg);}100%{transform:rotate(-1deg);} }
 
-.bubble.bot {
-    background:rgba(1,27,59,0.7);
-    border:1px solid rgba(0,189,138,0.12);
-    color:var(--accent-2);
-}
-.bubble.user {
-    background:rgba(1,18,40,0.8);
-    border:1px solid rgba(0,164,255,0.09);
-    color:#c9d1d9;
-}
+.bubble.bot { background:rgba(1,27,59,0.7); border:1px solid rgba(0,189,138,0.12); color:var(--accent-2); }
+.bubble.user { background:rgba(1,18,40,0.8); border:1px solid rgba(0,164,255,0.09); color:#c9d1d9; }
 
-.meta { font-size:12px; color: var(--muted); margin-bottom:6px; }
-
-/* Typing animation */
-.typing {
-    display:none;
-    padding:0 28px 18px;
-}
-.typing .dot {
-    display:inline-block;
-    width:8px;
-    height:8px;
-    border-radius:999px;
-    margin-right:6px;
-    background:var(--accent);
-    opacity:0.85;
-    animation: typing 1s infinite ease-in-out;
-}
+/* 26-30: Typing animations */
+.typing { display:none; padding:0 28px 18px; }
+.typing .dot { display:inline-block; width:8px; height:8px; border-radius:999px; margin-right:6px; background:var(--accent); opacity:0.85; animation: typing 1s infinite ease-in-out, bounceDot 1.5s infinite alternate, glowDot 2s infinite alternate;}
 .typing .dot:nth-child(2) { animation-delay:0.12s; }
 .typing .dot:nth-child(3) { animation-delay:0.24s; }
-@keyframes typing {
-    0%,100% { transform:translateY(0) scale(1); opacity:0.6; }
-    50% { transform:translateY(-6px) scale(1.25); opacity:1; }
-}
 
-/* Composer animations */
-.composer {
-    display:flex;
-    gap:12px;
-    padding:18px;
-    border-top:1px solid rgba(255,255,255,0.02);
-    background: var(--panel);
-    align-items:center;
-}
+@keyframes typing {0%,100%{transform:translateY(0) scale(1);opacity:0.6;}50%{transform:translateY(-6px) scale(1.25);opacity:1;}}
+@keyframes bounceDot {0%{transform:translateY(0);}50%{transform:translateY(-4px);}100%{transform:translateY(0);} }
+@keyframes glowDot {0%{background:var(--accent);}50%{background:var(--accent-2);}100%{background:var(--accent-3);}}
 
-.input {
-    flex:1;
-    padding:12px 14px;
-    border-radius:12px;
-    border:1px solid rgba(48,54,61,0.4);
-    background:rgba(255,255,255,0.02);
-    color:#c9d1d9;
-    outline:none;
-    transition: box-shadow 0.3s ease, border-color 0.3s ease;
-}
-.input:focus {
-    box-shadow:0 0 18px rgba(0,189,138,0.12);
-    border-color: rgba(0,189,138,0.25);
-    animation: inputGlow 1.5s infinite alternate;
-}
-@keyframes inputGlow {
-    0% { box-shadow:0 0 12px rgba(0,189,138,0.1); }
-    100% { box-shadow:0 0 22px rgba(0,189,138,0.2); }
-}
+/* 31-40: Input & send animations */
+.composer { display:flex; gap:12px; padding:18px; border-top:1px solid rgba(255,255,255,0.02); background: var(--panel); align-items:center; }
+.input { flex:1; padding:12px 14px; border-radius:12px; border:1px solid rgba(48,54,61,0.4); background:rgba(255,255,255,0.02); color:#c9d1d9; outline:none; transition: box-shadow 0.3s ease, border-color 0.3s ease; animation: glowInput 3s infinite alternate; }
+.input:focus { box-shadow:0 0 18px var(--accent-2); border-color: var(--accent); animation: inputFocus 1.5s infinite alternate; }
+@keyframes glowInput {0%{box-shadow:0 0 12px var(--accent-2);}50%{box-shadow:0 0 22px var(--accent-3);}100%{box-shadow:0 0 18px var(--accent);} }
+@keyframes inputFocus {0%{box-shadow:0 0 18px var(--accent);}50%{box-shadow:0 0 25px var(--accent-2);}100%{box-shadow:0 0 20px var(--accent-3);} }
 
-.send {
-    padding:10px 16px;
-    border-radius:10px;
-    border:none;
-    background: var(--accent);
-    color:#011228;
-    font-weight:600;
-    cursor:pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.send:hover {
-    transform: translateY(-4px) scale(1.03);
-    box-shadow:0 10px 22px rgba(0,189,138,0.5);
-}
-.send:active {
-    transform: translateY(0) scale(0.97);
-}
-.send:disabled { opacity:0.6; cursor:not-allowed; }
+.send { padding:10px 16px; border-radius:10px; border:none; background: var(--accent); color:#011228; font-weight:600; cursor:pointer; transition: transform 0.3s ease, box-shadow 0.3s ease; animation: bounceSend 2s infinite alternate, glowSend 3s infinite alternate; }
+.send:hover { transform: translateY(-4px) scale(1.03); box-shadow:0 10px 22px rgba(0,189,138,0.5); }
+.send:active { transform: translateY(0) scale(0.97); }
+@keyframes bounceSend {0%{transform:translateY(0);}50%{transform:translateY(-6px);}100%{transform:translateY(0);} }
+@keyframes glowSend {0%{box-shadow:0 6px 12px var(--accent);}50%{box-shadow:0 6px 22px var(--accent-2);}100%{box-shadow:0 6px 18px var(--accent-3);} }
 
 .app-footer { margin-top:16px; color: var(--muted); font-size:13px; z-index:2; }
 
 /* Small screens */
-@media (max-width:640px) {
-    .messages { height:60vh; padding:18px; }
-    .chat-panel { border-radius:14px; }
-}
+@media (max-width:640px){ .messages{height:60vh;padding:18px;} .chat-panel{border-radius:14px;} }
 
-.hidden { display:none; }
-
+.hidden{display:none;}
 </style>
 </head>
 
@@ -291,7 +219,7 @@ body {
 </main>
 
 <script>
-// Basic interactive JS for testing
+// Basic interactive JS
 const messages = document.getElementById('messages');
 const input = document.getElementById('input');
 const send = document.getElementById('send');
@@ -345,7 +273,6 @@ function sendMsg(){
 
 send.addEventListener('click', sendMsg);
 input.addEventListener('keypress', e=>{ if(e.key==='Enter') sendMsg(); });
-
 </script>
 </body>
 </html>
