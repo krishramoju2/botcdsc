@@ -4,10 +4,6 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>CDSC Assistant</title>
-
-<!-- Google Fonts for Calligraphy / Elegant typography -->
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Great+Vibes&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-
 <style>
 :root {
     --bg-1:#011228;
@@ -20,103 +16,141 @@
 }
 
 /* Reset */
-* { box-sizing:border-box; margin:0; padding:0; }
-html, body { height:100%; font-family:'Inter', sans-serif; background:linear-gradient(135deg,var(--bg-1)0%,var(--bg-2)100%); color:#e6f1ff; }
-
-/* App root */
-.app-root { min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:32px; position:relative; }
-
-/* Background animations (behind everything) */
-.canvas-bg {
-    position:absolute; inset:0; opacity:0.2; pointer-events:none;
-    background:
-        radial-gradient(circle at 20% 50%, rgba(157,78,221,0.25) 0%, transparent 40%),
-        radial-gradient(circle at 80% 50%, rgba(0,164,255,0.18) 0%, transparent 40%);
-    filter:blur(25px);
-    animation: drift 120s infinite alternate linear, hueShift 30s infinite linear;
+* { box-sizing:border-box; }
+html, body, #app { height:100%; margin:0; }
+body {
+    font-family: 'Playfair Display', serif; /* calligraphy style */
+    background: linear-gradient(135deg, var(--bg-1) 0%, var(--bg-2) 100%);
+    color:#e6f1ff;
 }
-@keyframes drift {0%{background-position:20% 50%,80% 50%;}100%{background-position:25% 55%,75% 45%;}}
-@keyframes hueShift {0%{filter:hue-rotate(0deg) blur(25px);}50%{filter:hue-rotate(180deg) blur(35px);}100%{filter:hue-rotate(360deg) blur(25px);}}
+
+/* Root container */
+.app-root {
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:32px;
+    position:relative;
+}
 
 /* Header */
-.app-header { width:100%; max-width:980px; display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; z-index:2; animation:fadeDown 1s ease forwards, bounce 2s infinite alternate; }
-@keyframes fadeDown {0%{opacity:0;transform:translateY(-50px);}100%{opacity:1;transform:translateY(0);}}
-@keyframes bounce {0%{transform:translateY(0);}50%{transform:translateY(-5px);}100%{transform:translateY(0);}}
+.app-header {
+    width:100%;
+    max-width:980px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:18px;
+    z-index:2;
+    animation: fadeDown 1s ease forwards, bounce 2s infinite alternate;
+}
+@keyframes fadeDown { 0% { opacity:0; transform: translateY(-50px);} 100% { opacity:1; transform: translateY(0);} }
+@keyframes bounce { 0% { transform:translateY(0);} 50% { transform:translateY(-5px);} 100% { transform:translateY(0);} }
 
 .logo-wrap { display:flex; align-items:center; gap:12px; }
-.logo { font-family:'Great Vibes', cursive; font-weight:700; font-size:28px; color:var(--accent); text-shadow:0 0 12px var(--accent); animation:glowText 3s infinite alternate, scaleText 2s infinite alternate;}
-@keyframes glowText {0%{text-shadow:0 0 10px var(--accent);}50%{text-shadow:0 0 20px var(--accent-2);}100%{text-shadow:0 0 25px var(--accent-3);}}
-@keyframes scaleText {0%{transform:scale(1);}50%{transform:scale(1.05);}100%{transform:scale(1);}}
 
-.logo-glow { width:48px; height:48px; border-radius:999px; background:radial-gradient(circle,var(--accent)0%,transparent 50%); box-shadow:0 0 20px var(--accent); animation:pulse 2s infinite alternate ease-in-out, rotateLogo 4s linear infinite; }
-@keyframes pulse {0%,100%{transform:scale(1);opacity:0.8;}50%{transform:scale(1.2);opacity:1;}}
-@keyframes rotateLogo {0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
+/* Logo glow */
+.logo {
+    font-weight:700;
+    font-size:28px;
+    color: var(--accent);
+    text-shadow: 0 0 15px var(--accent);
+    animation: glowText 3s infinite alternate, scaleText 2s infinite alternate;
+}
+@keyframes glowText {
+    0% { text-shadow: 0 0 10px var(--accent); }
+    50% { text-shadow: 0 0 20px var(--accent-2); }
+    100% { text-shadow: 0 0 25px var(--accent-3); }
+}
+@keyframes scaleText {
+    0% { transform:scale(1); } 50% { transform:scale(1.1); } 100% { transform:scale(1); }
+}
 
-.status { font-family:'Dancing Script', cursive; color:var(--muted); font-size:16px; opacity:0; animation:fadeInStatus 2s ease forwards, wiggle 1.5s infinite alternate; }
-@keyframes fadeInStatus {0%{opacity:0;transform:translateY(-10px);}100%{opacity:1;transform:translateY(0);}}
+.logo-glow {
+    width:48px;
+    height:48px;
+    border-radius:999px;
+    background: radial-gradient(circle, var(--accent) 0%, transparent 50%);
+    box-shadow:0 0 20px var(--accent);
+    animation: pulse 2s infinite alternate ease-in-out, rotateLogo 4s linear infinite;
+}
+@keyframes pulse { 0%,100%{transform:scale(1);opacity:0.8;}50%{transform:scale(1.2);opacity:1;} }
+@keyframes rotateLogo {0%{transform:rotate(0deg);}100%{transform:rotate(360deg);} }
+
+/* Status */
+.status {
+    color: var(--muted);
+    font-size:14px;
+    opacity:0;
+    animation: fadeInStatus 2s ease forwards, wiggle 1.5s infinite alternate;
+}
+@keyframes fadeInStatus { 0%{opacity:0;transform:translateY(-10px);}100%{opacity:1;transform:translateY(0);} }
 @keyframes wiggle {0%{transform:rotate(-2deg);}50%{transform:rotate(2deg);}100%{transform:rotate(-2deg);}}
 
 /* Chat panel */
-.chat-panel { 
-    width:100%; max-width:980px; border-radius:18px; border:1px solid rgba(0,189,138,0.08); overflow:hidden; box-shadow:0 8px 40px rgba(0,0,0,0.6); z-index:2; 
-    position:relative; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.015));
-    animation:slideUp 1s ease forwards, glowPanel 3s infinite alternate;
+.chat-panel {
+    width:100%;
+    max-width:980px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.015));
+    border-radius:18px;
+    border:1px solid rgba(0,189,138,0.08);
+    overflow:hidden;
+    box-shadow:0 8px 40px rgba(0,0,0,0.6);
+    z-index:2;
+    animation: slideUp 1s ease forwards;
 }
 @keyframes slideUp {0%{opacity:0;transform:translateY(50px);}100%{opacity:1;transform:translateY(0);}}
-@keyframes glowPanel {0%{box-shadow:0 8px 30px rgba(0,189,138,0.2);}50%{box-shadow:0 8px 40px rgba(0,164,255,0.5);}100%{box-shadow:0 8px 35px rgba(0,189,138,0.4);}}
-
-/* Chat panel internal animated background */
-.chat-bg {
-    position:absolute; inset:0; pointer-events:none; z-index:0; overflow:hidden;
-}
-.particle {
-    position:absolute; width:6px; height:6px; border-radius:50%; opacity:0.6;
-    background: var(--accent);
-    animation: driftParticle linear infinite;
-}
-@keyframes driftParticle {
-    0% { transform: translate(0,0) scale(1); opacity:0.4; }
-    50% { transform: translate(50px,-30px) scale(1.3); opacity:0.8; }
-    100% { transform: translate(-20px,20px) scale(1); opacity:0.4; }
-}
 
 /* Messages */
-.messages { height:520px; overflow-y:auto; padding:28px; display:flex; flex-direction:column; gap:18px; position:relative; z-index:1; }
-.message { max-width:78%; display:flex; gap:12px; align-items:flex-start; opacity:0; animation:messageFade 0.5s ease forwards; }
-.message.bot { justify-content:flex-start; font-family:'Dancing Script', cursive; font-size:16px; }
-.message.user { justify-content:flex-end; align-self:flex-end; font-family:'Inter', sans-serif; font-size:15px; }
+.messages {
+    height:520px;
+    overflow-y:auto;
+    padding:28px;
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
 
-@keyframes messageFade {0%{opacity:0;transform:translateY(20px) rotateX(-20deg);}100%{opacity:1;transform:translateY(0) rotateX(0deg);}}
+/* Message animations */
+.message { max-width:78%; display:flex; gap:12px; align-items:flex-start; opacity:0; animation: messageFade 0.5s ease forwards; }
+.message.bot { justify-content:flex-start; }
+.message.user { justify-content:flex-end; align-self:flex-end; }
 
-.bubble { padding:14px 16px; border-radius:12px; line-height:1.45; box-shadow:0 6px 20px rgba(2,6,23,0.6); animation:bubbleGlow 2.5s infinite alternate, floatBubble 4s infinite ease-in-out, rotateBubble 6s infinite linear;}
-@keyframes bubbleGlow {0%{box-shadow:0 6px 20px rgba(2,6,23,0.4);}50%{box-shadow:0 6px 30px rgba(0,164,255,0.6);}100%{box-shadow:0 6px 25px rgba(0,189,138,0.5);}}
-@keyframes floatBubble {0%{transform:translateY(0);}50%{transform:translateY(-4px);}100%{transform:translateY(0);}}
-@keyframes rotateBubble {0%{transform:rotate(-1deg);}50%{transform:rotate(1deg);}100%{transform:rotate(-1deg);}}
+@keyframes messageFade {0%{opacity:0;transform:translateY(20px) rotateX(-20deg);}100%{opacity:1;transform:translateY(0) rotateX(0deg);} }
+
+.bubble {
+    padding:14px 16px;
+    border-radius:12px;
+    line-height:1.35;
+    box-shadow:0 6px 20px rgba(2,6,23,0.6);
+    animation: bubbleGlow 2.5s infinite alternate;
+}
+@keyframes bubbleGlow {0%{box-shadow:0 6px 20px rgba(2,6,23,0.4);}50%{box-shadow:0 6px 30px rgba(0,164,255,0.6);}100%{box-shadow:0 6px 25px rgba(0,189,138,0.5);} }
 
 .bubble.bot { background:rgba(1,27,59,0.7); border:1px solid rgba(0,189,138,0.12); color:var(--accent-2); }
 .bubble.user { background:rgba(1,18,40,0.8); border:1px solid rgba(0,164,255,0.09); color:#c9d1d9; }
 
-/* Typing indicator */
+/* Typing animation */
 .typing { display:none; padding:0 28px 18px; }
-.typing .dot { display:inline-block; width:8px; height:8px; border-radius:999px; margin-right:6px; background:var(--accent); opacity:0.85; animation: typing 1s infinite ease-in-out, bounceDot 1.5s infinite alternate, glowDot 2s infinite alternate;}
+.typing .dot { display:inline-block; width:8px; height:8px; border-radius:999px; margin-right:6px; background:var(--accent); opacity:0.85; animation: typing 1s infinite ease-in-out; }
 .typing .dot:nth-child(2) { animation-delay:0.12s; }
 .typing .dot:nth-child(3) { animation-delay:0.24s; }
 @keyframes typing {0%,100%{transform:translateY(0) scale(1);opacity:0.6;}50%{transform:translateY(-6px) scale(1.25);opacity:1;}}
-@keyframes bounceDot {0%{transform:translateY(0);}50%{transform:translateY(-4px);}100%{transform:translateY(0);}}
-@keyframes glowDot {0%{background:var(--accent);}50%{background:var(--accent-2);}100%{background:var(--accent-3);}}
 
-/* Input & send */
+/* Input & Send */
 .composer { display:flex; gap:12px; padding:18px; border-top:1px solid rgba(255,255,255,0.02); background: var(--panel); align-items:center; }
-.input { flex:1; padding:12px 14px; border-radius:12px; border:1px solid rgba(48,54,61,0.4); background:rgba(255,255,255,0.02); color:#c9d1d9; outline:none; font-family:'Inter',sans-serif; transition: box-shadow 0.3s ease, border-color 0.3s ease; animation: glowInput 3s infinite alternate; }
-.input:focus { box-shadow:0 0 18px var(--accent-2); border-color: var(--accent); animation: inputFocus 1.5s infinite alternate; }
-.send { padding:10px 16px; border-radius:10px; border:none; background: var(--accent); color:#011228; font-weight:600; cursor:pointer; transition: transform 0.3s ease, box-shadow 0.3s ease; animation:bounceSend 2s infinite alternate, glowSend 3s infinite alternate; font-family:'Inter',sans-serif;}
-.send:hover { transform: translateY(-4px) scale(1.03); box-shadow:0 10px 22px rgba(0,189,138,0.5);}
-.send:active { transform: translateY(0) scale(0.97);}
+.input { flex:1; padding:12px 14px; border-radius:12px; border:1px solid rgba(48,54,61,0.4); background:rgba(255,255,255,0.02); color:#c9d1d9; outline:none; transition: box-shadow 0.3s ease, border-color 0.3s ease; }
+.input:focus { box-shadow:0 0 18px var(--accent-2); border-color: var(--accent); }
+
+.send { padding:10px 16px; border-radius:10px; border:none; background: var(--accent); color:#011228; font-weight:600; cursor:pointer; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+.send:hover { transform: translateY(-4px) scale(1.03); box-shadow:0 10px 22px rgba(0,189,138,0.5); }
+.send:active { transform: translateY(0) scale(0.97); }
 
 .app-footer { margin-top:16px; color: var(--muted); font-size:13px; z-index:2; }
 
-/* Small screens */
-@media(max-width:640px){.messages{height:60vh;padding:18px;}.chat-panel{border-radius:14px;}}
+@media (max-width:640px){ .messages{height:60vh;padding:18px;} .chat-panel{border-radius:14px;} }
 </style>
 </head>
 
@@ -133,7 +167,6 @@ html, body { height:100%; font-family:'Inter', sans-serif; background:linear-gra
     </header>
 
     <section class="chat-panel" aria-label="Chat panel">
-        <div class="chat-bg" id="chat-bg"></div>
         <div id="messages" class="messages" role="log" aria-live="polite"></div>
 
         <div id="typing" class="typing" aria-hidden="true">
@@ -150,22 +183,6 @@ html, body { height:100%; font-family:'Inter', sans-serif; background:linear-gra
 </main>
 
 <script>
-// Chat particles inside chat panel
-const chatBg = document.getElementById('chat-bg');
-const particleCount = 30;
-const colors = ['var(--accent)','var(--accent-2)','var(--accent-3)'];
-
-for(let i=0;i<particleCount;i++){
-    const p = document.createElement('div');
-    p.classList.add('particle');
-    p.style.left = Math.random()*100+'%';
-    p.style.top = Math.random()*100+'%';
-    p.style.background = colors[Math.floor(Math.random()*colors.length)];
-    p.style.width = p.style.height = (4+Math.random()*6)+'px';
-    p.style.animationDuration = (4+Math.random()*6)+'s';
-    chatBg.appendChild(p);
-}
-
 // Basic interactive JS
 const messages = document.getElementById('messages');
 const input = document.getElementById('input');
@@ -179,6 +196,7 @@ const QA = {
     "bye": "Goodbye! Come back soon.",
     "how are you": "I'm a bot, but doing great!"
 };
+
 const fallback = [
     "Hmm… I need more info.",
     "Interesting question!",
@@ -199,7 +217,9 @@ function addMsg(text, sender='bot'){
 
 function getResponse(inputVal){
     const val = inputVal.toLowerCase();
-    for(const k in QA){ if(val.includes(k)) return QA[k]; }
+    for(const k in QA){
+        if(val.includes(k)) return QA[k];
+    }
     return fallback[Math.floor(Math.random()*fallback.length)];
 }
 
