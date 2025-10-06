@@ -4,6 +4,10 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>CDSC Assistant</title>
+
+<!-- Google Fonts for Calligraphy / Elegant typography -->
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Great+Vibes&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
 <style>
 :root {
     --bg-1:#011228;
@@ -20,7 +24,7 @@
 * { box-sizing:border-box; }
 html, body, #app { height:100%; margin:0; }
 body {
-    font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
     background: linear-gradient(135deg, var(--bg-1) 0%, var(--bg-2) 100%);
     color:#e6f1ff;
 }
@@ -36,7 +40,7 @@ body {
     position:relative;
 }
 
-/* 1-5: Background animations */
+/* Background animations */
 .canvas-bg {
     position:absolute;
     inset:0;
@@ -74,12 +78,13 @@ body {
 
 .logo-wrap { display:flex; align-items:center; gap:12px; }
 
-/* 6-10: Logo animations */
+/* Logo with calligraphy */
 .logo {
+    font-family: 'Great Vibes', cursive;
     font-weight:700;
-    font-size:22px;
+    font-size:28px;
     color: var(--accent);
-    text-shadow:0 0 10px var(--accent);
+    text-shadow:0 0 12px var(--accent);
     animation: glowText 3s infinite alternate, scaleText 2s infinite alternate;
 }
 @keyframes glowText {
@@ -88,7 +93,7 @@ body {
     100% { text-shadow: 0 0 25px var(--accent-3); }
 }
 @keyframes scaleText {
-    0%{transform:scale(1);} 50%{transform:scale(1.1);} 100%{transform:scale(1);}
+    0%{transform:scale(1);} 50%{transform:scale(1.05);} 100%{transform:scale(1);}
 }
 
 .logo-glow {
@@ -102,10 +107,11 @@ body {
 @keyframes pulse { 0%,100%{transform:scale(1);opacity:0.8;}50%{transform:scale(1.2);opacity:1;} }
 @keyframes rotateLogo {0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
 
-/* 11-15: Status text animations */
+/* Status */
 .status {
+    font-family: 'Dancing Script', cursive;
     color: var(--muted);
-    font-size:14px;
+    font-size:16px;
     opacity:0;
     animation: fadeInStatus 2s ease forwards, wiggle 1.5s infinite alternate;
 }
@@ -137,17 +143,17 @@ body {
     gap:18px;
 }
 
-/* 16-25: Message animations */
+/* Message animations */
 .message { max-width:78%; display:flex; gap:12px; align-items:flex-start; opacity:0; animation: messageFade 0.5s ease forwards; }
-.message.bot { justify-content:flex-start; }
-.message.user { justify-content:flex-end; align-self:flex-end; }
+.message.bot { justify-content:flex-start; font-family: 'Dancing Script', cursive; font-size:16px; }
+.message.user { justify-content:flex-end; align-self:flex-end; font-family: 'Inter', sans-serif; font-size:15px; }
 
 @keyframes messageFade {0%{opacity:0;transform:translateY(20px) rotateX(-20deg);}100%{opacity:1;transform:translateY(0) rotateX(0deg);} }
 
 .bubble {
     padding:14px 16px;
     border-radius:12px;
-    line-height:1.35;
+    line-height:1.45;
     box-shadow:0 6px 20px rgba(2,6,23,0.6);
     animation: bubbleGlow 2.5s infinite alternate, floatBubble 4s infinite ease-in-out, rotateBubble 6s infinite linear;
 }
@@ -158,34 +164,28 @@ body {
 .bubble.bot { background:rgba(1,27,59,0.7); border:1px solid rgba(0,189,138,0.12); color:var(--accent-2); }
 .bubble.user { background:rgba(1,18,40,0.8); border:1px solid rgba(0,164,255,0.09); color:#c9d1d9; }
 
-/* 26-30: Typing animations */
+/* Typing animation */
 .typing { display:none; padding:0 28px 18px; }
 .typing .dot { display:inline-block; width:8px; height:8px; border-radius:999px; margin-right:6px; background:var(--accent); opacity:0.85; animation: typing 1s infinite ease-in-out, bounceDot 1.5s infinite alternate, glowDot 2s infinite alternate;}
 .typing .dot:nth-child(2) { animation-delay:0.12s; }
 .typing .dot:nth-child(3) { animation-delay:0.24s; }
-
 @keyframes typing {0%,100%{transform:translateY(0) scale(1);opacity:0.6;}50%{transform:translateY(-6px) scale(1.25);opacity:1;}}
 @keyframes bounceDot {0%{transform:translateY(0);}50%{transform:translateY(-4px);}100%{transform:translateY(0);} }
 @keyframes glowDot {0%{background:var(--accent);}50%{background:var(--accent-2);}100%{background:var(--accent-3);}}
 
-/* 31-40: Input & send animations */
+/* Input & send */
 .composer { display:flex; gap:12px; padding:18px; border-top:1px solid rgba(255,255,255,0.02); background: var(--panel); align-items:center; }
-.input { flex:1; padding:12px 14px; border-radius:12px; border:1px solid rgba(48,54,61,0.4); background:rgba(255,255,255,0.02); color:#c9d1d9; outline:none; transition: box-shadow 0.3s ease, border-color 0.3s ease; animation: glowInput 3s infinite alternate; }
+.input { flex:1; padding:12px 14px; border-radius:12px; border:1px solid rgba(48,54,61,0.4); background:rgba(255,255,255,0.02); color:#c9d1d9; outline:none; transition: box-shadow 0.3s ease, border-color 0.3s ease; animation: glowInput 3s infinite alternate; font-family:'Inter',sans-serif; }
 .input:focus { box-shadow:0 0 18px var(--accent-2); border-color: var(--accent); animation: inputFocus 1.5s infinite alternate; }
-@keyframes glowInput {0%{box-shadow:0 0 12px var(--accent-2);}50%{box-shadow:0 0 22px var(--accent-3);}100%{box-shadow:0 0 18px var(--accent);} }
-@keyframes inputFocus {0%{box-shadow:0 0 18px var(--accent);}50%{box-shadow:0 0 25px var(--accent-2);}100%{box-shadow:0 0 20px var(--accent-3);} }
 
-.send { padding:10px 16px; border-radius:10px; border:none; background: var(--accent); color:#011228; font-weight:600; cursor:pointer; transition: transform 0.3s ease, box-shadow 0.3s ease; animation: bounceSend 2s infinite alternate, glowSend 3s infinite alternate; }
+.send { padding:10px 16px; border-radius:10px; border:none; background: var(--accent); color:#011228; font-weight:600; cursor:pointer; transition: transform 0.3s ease, box-shadow 0.3s ease; animation: bounceSend 2s infinite alternate, glowSend 3s infinite alternate; font-family:'Inter',sans-serif; }
 .send:hover { transform: translateY(-4px) scale(1.03); box-shadow:0 10px 22px rgba(0,189,138,0.5); }
 .send:active { transform: translateY(0) scale(0.97); }
-@keyframes bounceSend {0%{transform:translateY(0);}50%{transform:translateY(-6px);}100%{transform:translateY(0);} }
-@keyframes glowSend {0%{box-shadow:0 6px 12px var(--accent);}50%{box-shadow:0 6px 22px var(--accent-2);}100%{box-shadow:0 6px 18px var(--accent-3);} }
 
 .app-footer { margin-top:16px; color: var(--muted); font-size:13px; z-index:2; }
 
 /* Small screens */
 @media (max-width:640px){ .messages{height:60vh;padding:18px;} .chat-panel{border-radius:14px;} }
-
 .hidden{display:none;}
 </style>
 </head>
@@ -219,7 +219,7 @@ body {
 </main>
 
 <script>
-// Basic interactive JS
+// Same JS logic as before
 const messages = document.getElementById('messages');
 const input = document.getElementById('input');
 const send = document.getElementById('send');
@@ -232,7 +232,6 @@ const QA = {
     "bye": "Goodbye! Come back soon.",
     "how are you": "I'm a bot, but doing great!"
 };
-
 const fallback = [
     "Hmm… I need more info.",
     "Interesting question!",
@@ -253,9 +252,7 @@ function addMsg(text, sender='bot'){
 
 function getResponse(inputVal){
     const val = inputVal.toLowerCase();
-    for(const k in QA){
-        if(val.includes(k)) return QA[k];
-    }
+    for(const k in QA){ if(val.includes(k)) return QA[k]; }
     return fallback[Math.floor(Math.random()*fallback.length)];
 }
 
